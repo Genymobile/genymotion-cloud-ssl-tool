@@ -52,25 +52,7 @@ rm sshd_config
 adb shell stop sshd
 adb shell start sshd
 
-# Generate temporary PKCS12
-openssl pkcs12 -export -inkey /etc/letsencrypt/live/${domain}/privkey.pem -in /etc/letsencrypt/live/${domain}/fullchain.pem -out tmp.pkcs12 -name genymotion -password pass:shortlivedpassword
-
-# Generate BouncyCastle keystore from PKCS12
-# First fetch the BouncyCastle provider that'll be used by 'keytool'
-wget https://www.bouncycastle.org/download/bcprov-jdk15on-156.jar
-# Actually generate stuff
-keytool -importkeystore -deststorepass ${keystorepassword} -destkeypass ${certpassword} -deststoretype BKS -destkeystore custom.bks -srckeystore tmp.pkcs12 -srcstoretype PKCS12 -srcstorepass shortlivedpassword -alias genymotion -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk15on-156.jar
-
-# Clean up a bit
-rm tmp.pkcs12
-rm bcprov-jdk15on-156.jar
-
-# Hardwork is done, give useful stuff to Android
-adb shell setprop persist.tls.pw.ks ${keystorepassword}
-adb shell setprop persist.tls.pw.cert ${certpassword}
-adb shell mkdir /data/misc/tls/
-adb push custom.bks /data/misc/tls/custom.bks
-adb shell sync
+. ./package.sh
 
 adb reboot
 echo "You should be able to use https://${domain}/ now"

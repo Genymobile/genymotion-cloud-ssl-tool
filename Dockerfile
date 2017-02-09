@@ -12,6 +12,9 @@
 # run this docker:
     # docker run --net=host -P -v <path_to_aws_ssl>:/opt/work/ --env domain=<domain> --env usermail=<mail> --env keystorepassword=<kspassword> --env certpassword=<kppassword> -t -i <usr>/<name>  /opt/work/generate.sh
 
+# To use existing certificate using similar format
+# docker run --net=host -P -v <path_to_aws_ssl>:/opt/work/ --env domain=<domain> --env package=true --env keystorepassword=<kspassword> --env certpassword=<kppassword> -t -i <usr>/<name> /opt/work/package.sh <relpath_to_privkey.pem> <relpath_to_fullchain.pem>
+
 # Alternatively, you could install those dependencies on your own distro, set environnment variables
 # according to the 'docker run' line and run generate.sh
 
