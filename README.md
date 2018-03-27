@@ -1,4 +1,4 @@
-# Install a trusted certificate for your Genymotion AWS instance 
+# Install a trusted certificate for your Genymotion Cloud instance 
 
 ## Prerequisites
 
@@ -8,13 +8,13 @@ Adb should be enabled on your instance.
 
 * Clone this repository
 
-`git clone https://github.com/Genymobile/aws-ssl.git`
+`git clone https://github.com/Genymobile/genymotion-cloud-ssl-tool.git`
 
-* Go to `aws-ssl` repository
+* Go to `genymotion-cloud-ssl-tool` repository
 
-`cd aws-ssl`
+`cd genymotion-cloud-ssl-tool`
 
-* Copy your privkey.pem and fullchain.pem to the `aws-ssl` repository
+* Copy your privkey.pem and fullchain.pem to the `genymotion-cloud-ssl-tool` repository
 
 `cp /path/to/privkey.pem . && cp /path/to/fullchain.pem .`
 
@@ -26,11 +26,11 @@ Adb should be enabled on your instance.
 
 * Run this docker
 
-`docker run --net=host -P -v <path_to_aws_ssl>:/opt/work/ --env package=true --env keystorepassword=<kspassword> --env certpassword=<kppassword> -t -i <name> /opt/work/package.sh <relpath_to_privkey.pem> <relpath_to_fullchain.pem>`
+`docker run --net=host -P -v <path_to_genymotion_cloud_ssl_tool>:/opt/work/ --env package=true --env keystorepassword=<kspassword> --env certpassword=<kppassword> -t -i <name> /opt/work/package.sh <relpath_to_privkey.pem> <relpath_to_fullchain.pem>`
 
-`<relpath_to_privkey.pem>` and `<relpath_to_fullchain.pem>` are relative paths from the `aws-ssl` directory
+`<relpath_to_privkey.pem>` and `<relpath_to_fullchain.pem>` are relative paths from the `genymotion-cloud-ssl-tool` directory
 
-`<path_to_aws_ssl>` is the complete path to the aws-ssl repository
+`<path_to_genymotion_cloud_ssl_tool>` is the complete path to the genymotion-cloud-ssl-tool repository
 
 `<kspassword>` and `<kppassword>`are respectively the keystore and certificate passwords
 
