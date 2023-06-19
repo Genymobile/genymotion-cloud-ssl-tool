@@ -2,35 +2,46 @@
 
 ## Prerequisites
 
-Adb should be enabled on your instance.
 
-## In case you already have your certificate
+1. Your `domain` DNS should already point to your AWS instance IP.
+2. You already generated a valid certificate for your `domain`.
+3. Adb should be enabled on your instance.
+4. Your device must be rooted. (See [here](https://docs.genymotion.com/paas/10_Using_root_access/) for android 10)
 
+## HOWTO
 * Clone this repository
 
-`git clone https://github.com/Genymobile/genymotion-cloud-ssl-tool.git`
+```
+git clone https://github.com/Genymobile/genymotion-cloud-ssl-tool.git
+```
 
 * Go to `genymotion-cloud-ssl-tool` repository
 
-`cd genymotion-cloud-ssl-tool`
+```
+cd genymotion-cloud-ssl-tool
+```
 
 * Copy your privkey.pem and fullchain.pem to the `genymotion-cloud-ssl-tool` repository
 
-`cp /path/to/privkey.pem . && cp /path/to/fullchain.pem .`
+```
+cp /path/to/privkey.pem . && cp /path/to/fullchain.pem .
+```
 
 * Build this docker
 
-`docker build -t <name> .`
+```
+docker build -t <name> .
+```
 
 `<name>` is how you want to tag your docker
 
 * Run this docker
 
-`docker run --net=host -P -v <path_to_genymotion_cloud_ssl_tool>:/opt/work/ --env package=true --env keystorepassword=<kspassword> --env certpassword=<kppassword> -t -i <name> /opt/work/package.sh <relpath_to_privkey.pem> <relpath_to_fullchain.pem>`
+```
+docker run -v <full_path_to_genymotion_cloud_ssl_tool>:/opt/work/ --env package=true --env keystorepassword=<kspassword> --env certpassword=<kppassword> --env domain=<domainName> -t -i <name>
+```
 
-`<relpath_to_privkey.pem>` and `<relpath_to_fullchain.pem>` are relative paths from the `genymotion-cloud-ssl-tool` directory
-
-`<path_to_genymotion_cloud_ssl_tool>` is the complete path to the genymotion-cloud-ssl-tool repository
+`<full_path_to_genymotion_cloud_ssl_tool>` is the complete path to the genymotion-cloud-ssl-tool repository
 
 `<kspassword>` and `<kppassword>`are respectively the keystore and certificate passwords
 
