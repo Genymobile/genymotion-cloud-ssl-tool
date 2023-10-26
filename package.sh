@@ -1,7 +1,8 @@
 #!/bin/bash
 set -x
 
-BCPROV_JAR=bcprov-jdk15to18-176.jar
+BCPROV_JAR=bcprov-jdk15-139b01.jar
+BCPROV_URL=https://www.bouncycastle.org/betas/
 
 print_usage_and_exit () {
         echo "usage: $0 <privkey> <fullchain>"
@@ -34,7 +35,7 @@ openssl pkcs12 -export -inkey ${privkey} -in ${fullchain} -out tmp.pkcs12 -name 
 
 # Generate BouncyCastle keystore from PKCS12
 # First fetch the BouncyCastle provider that'll be used by 'keytool'
-wget https://www.bouncycastle.org/download/${BCPROV_JAR}
+wget ${BCPROV_URL}/${BCPROV_JAR}
 
 # Generate a BKS keystore from the pkcs12 that contains the certificat
 keytool -importkeystore -deststorepass ${keystorepassword} -destkeypass ${certpassword} -deststoretype BKS -destkeystore custom.bks -srckeystore tmp.pkcs12 -srcstoretype PKCS12 -srcstorepass shortlivedpassword -alias genymotion -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath ${BCPROV_JAR}
