@@ -1,6 +1,8 @@
 #!/bin/bash
 set -x
 
+BCPROV_JAR=bcprov-jdk15to18-176.jar
+
 print_usage_and_exit () {
         echo "usage: $0 <privkey> <fullchain>"
         exit 1
@@ -32,13 +34,14 @@ openssl pkcs12 -export -inkey ${privkey} -in ${fullchain} -out tmp.pkcs12 -name 
 
 # Generate BouncyCastle keystore from PKCS12
 # First fetch the BouncyCastle provider that'll be used by 'keytool'
-wget https://www.bouncycastle.org/download/bcprov-jdk15on-156.jar
-# Actually generate stuff
-keytool -importkeystore -deststorepass ${keystorepassword} -destkeypass ${certpassword} -deststoretype BKS -destkeystore custom.bks -srckeystore tmp.pkcs12 -srcstoretype PKCS12 -srcstorepass shortlivedpassword -alias genymotion -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk15on-156.jar
+wget https://www.bouncycastle.org/download/${BCPROV_JAR}
+
+# Generate a BKS keystore from the pkcs12 that contains the certificat
+keytool -importkeystore -deststorepass ${keystorepassword} -destkeypass ${certpassword} -deststoretype BKS -destkeystore custom.bks -srckeystore tmp.pkcs12 -srcstoretype PKCS12 -srcstorepass shortlivedpassword -alias genymotion -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath ${BCPROV_JAR}
 
 # Clean up a bit
 rm tmp.pkcs12
-rm bcprov-jdk15on-156.jar
+rm ${BCPROV_JAR}
 
 # Hardwork is done, give useful stuff to Android
 adb connect ${domain}:5555
