@@ -1,8 +1,9 @@
 #!/bin/bash
 set -x
 
-BCPROV_JAR=bcprov-jdk15-139b01.jar
-BCPROV_URL=https://www.bouncycastle.org/betas/
+BCPROV_JAR=bcprov-jdk15on-1.56.jar
+BCPROV_URL=https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk15on/1.56
+
 
 print_usage_and_exit () {
         echo "usage: $0 <privkey> <fullchain>"
